@@ -1,0 +1,29 @@
+- Physical Storage
+- List the partition tables for the specified devices, then exit.
+  - `fdisk -l`
+  - Example output, where 'sda' stands for scsi/sata disk a, and 'vda' stands for 'virtual disk a'.
+    - /dev/sda
+    - /dev/sda0
+    - /dev/sda1
+    - /dev/sdb
+    - /dev/sdb0
+    - /dev/sdb1
+    - /dev/vda
+    - /dev/vda0
+    - /dev/vda1
+    - etc.
+- Create a partition to make a newly added disk usable:
+  - First, go add the disk.
+  - Choose the disk you want to partition.
+  - `fdisk /dev/<disk-name>`
+  - Follow the prompts.
+  - Create a file system on the disk.
+  - `sudo mkfs -t ext3 /dev/<disk-partition-name>`
+  - Create a mount point and mount it to the partition, if you're not going to use
+  - LVM1 to manage it.
+  - `sudo mkdir /mnt/test`
+  - `mount /dev/<disk-partition-name> /mnt/test`
+  - View partitions:
+  - `sudo cat /proc/partitions`
+
+  - See Master Linux Storage Management with LVM Chapter 3 'Command Line Tools' for the procedure on LVM.
