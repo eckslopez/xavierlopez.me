@@ -1,3 +1,28 @@
+- Device mapper: A virtual block device driver framework provided by the Linux kernel, which provides an infrastructure to filter I/O for block devices (BIO). It provides a platform for filter drivers also known as targets to map to BIO to multiple block devices, or to modify the BIO while it is in transit in kernel.
+  - Logical volume manager (LVM)
+  - Software RAIDs
+  - Dm-crypt dick encryption
+  - File system snapshots
+
+- Listing storage:
+  - List block devices and logical volumes.
+  - `lsblk`
+  - List Device mapper devices
+  - `sudo dmsetup ls`
+- LVM2 Storage Layers from top to bottom:
+  - Logical Volumes
+    - Dev-mapper devices which are formatted and presented to the consumer as a block device.
+  - Volume Groups
+    - Act as storage pools, aggregating storage from the physical layer together and overcoming the limitations of physical storage size.
+  - Physical
+    - Disks, partitions and raw files.
+
+  
+
+
+
+
+- VDA: virtual disk
 - CPU (Central Processing Unit):
   - Physical Hardware: The CPU is the physical hardware component of a computer that performs the actual processing of instructions. It executes instructions from programs, performs calculations, and manages data.
 
