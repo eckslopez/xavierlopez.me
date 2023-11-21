@@ -1,37 +1,28 @@
 ### Host Memory and CPU Troubleshooting
-- Check name resolution  
-  - `cat /etc/nsswitch.conf`
-  - `getent hosts`
-  - `dig`
-  - `resolvectl`
-- Interface information
-  - What's thej name of the interface we're using?  
-  - `ip a s`
-  - Are we dropping packets?  
-  - `ip -s link show <iface-name>`
-  - Look at the raw information:  
-  - `cat /proc/net/dev`
-  - Look at the same file, with columns:  
-  - `column -t /proc/net/dev`
-  - View configured options of the NIC, to see it's maximum bandwidth and speed capability, in order to compare it to the actual performance:  
-  - `ethtool <interface-name>`
-  - View current bandwidth and NIC speed:  
-  - `nload <interface-name>`
-- Test network access and network configuration issues
-  - Automate ping of default gateway
-  - `ping $(/sbin/ip route show | awk '/default/ { print $3 }')`
-  - Check subnet mask to be sure it's the same as all the other hosts on the network.
-  - `ip -4 addr show`
-  - `ip -4 route`
-  - Port scanning: check to see if port 22 is open on localhost
-  - `nmap -p 22 localhost`
-  - Check to see if port 22 is open on a range of hosts.
-  - `nmap -p 22 192.168.1.11-13`
-- Firewalls
-- Enable firewall
-  - `sudo systemctl enable --now firewalld`
-- List firewall rules
-  - `sudo firewall-cmd --list-all` 
+- List the partition tables for the specified devices, then exit.
+  - `fdisk -l`
+  - Example output, where 'sda' stands for scsi/sata disk a, and 'vda' stands for 'virtual disk a'.
+    - /dev/sda
+    - /dev/sda1
+    - /dev/sda2
+    - /dev/sdb
+    - /dev/sdb1
+    - /dev/sdb2
+    - /dev/vda
+    - /dev/vda1
+    - /dev/vda2
+    - etc.
+- Create a partition to make a newly added disk usable:
+  - First, go add the disk.
+  - Choose the disk you want to partition.
+  - `fdisk /dev/<disk-name>`
+  - Follow the prompts.
+  - Create a file system on the disk.
+  - `sudo mkfs -t ext4 /dev/<disk-partition-name>`
+  - Create a mount point and mount it to the partition.
+  - `sudo mkdir /mnt/test`
+  - `mount /dev/<disk-partition-name> /mnt/test`
+
 - Memory / CPU
 - Install and enable sysstat
   - `systemctl enable --now sysstat`
