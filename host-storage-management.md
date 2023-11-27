@@ -8,7 +8,13 @@
 - Discover what files are open and who's using it:
   - `lsof`
 
+- Linux Modules: Code segments that can be dynamically loaded and unloaded into the kernel. They can be removed when they are no longer needed. Modules extend the functionality of the kernel without requiring a reboot. They can configured as built-in or loadable. 
+- List modules in alphabetical order:
+  - `lsmod | sort -d | column -t | less`
 
+- Device Drivers: a piece of software that allows the operating system to communicate with a specific hardware device. It acts as an interface between the hardware device and the rest of the operating system, facilitating the exchange of data and commands.
+- List device drivers:
+- `lsmod` # Confusing. Are linux modules and device drivers the same thing, or aren't they?
 - Create a partition to make a newly added disk usable:
   - First, go add the disk.
   - Choose the disk you want to partition.
