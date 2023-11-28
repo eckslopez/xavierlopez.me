@@ -11,3 +11,5 @@ categories: ansible
     - Example: Action plugins act in conjunction with modules to the execute actions required by playbook tasks. 
 - Gather facts from one host:
 - `ansible <host-name-or-IP> -m ansible.builtin.setup`
+- Run an ad-hoc command:
+- `ansible sherman -m command -a "getent hosts"`
