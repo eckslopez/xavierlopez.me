@@ -1,4 +1,9 @@
-### Networks Concepts
+---
+layout: post
+title:  "Network Concepts"
+date:   2023-12-6 23:45:00 +0000
+categories: linux
+---
 - Layer 2 and 3 of the Open Systems Interconnection (OSI) Model. An explainer.
   - Data Link Layer (Layer 2):
     - Functionality: This layer is primarily concerned with the local delivery of frames between devices on the same network.

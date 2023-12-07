@@ -1,4 +1,9 @@
-### Host Memory and CPU Troubleshooting
+---
+layout: post
+title:  "Host Memory and CPU Troubleshooting"
+date:   2023-12-6 10:43:00 +0000
+categories: linux
+---
 - Install and enable sysstat
   - `systemctl enable --now sysstat`
   - `systemctl status sysstat`

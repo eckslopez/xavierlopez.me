@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Virtualization - CPU"
+date:   2023-12-6 10:51:00 +0000
+categories: virtualization
+---
 - Device mapper: A virtual block device driver framework provided by the Linux kernel, which provides an infrastructure to filter I/O for block devices (BIO). It provides a platform for filter drivers also known as targets to map to BIO to multiple block devices, or to modify the BIO while it is in transit in kernel.
   - Logical volume manager (LVM)
   - Software RAIDs

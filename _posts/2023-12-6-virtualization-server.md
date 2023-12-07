@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Virtualization - Server"
+date:   2023-12-6 11:01:00 +0000
+categories: virtualization,networking
+---
 - The Fundamentals of Server Virtualization:
 - Benefits
   -  Efficiency:

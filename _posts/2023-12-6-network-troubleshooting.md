@@ -1,4 +1,9 @@
-### Network Troubleshooting
+---
+layout: post
+title:  "Network Troubleshooting"
+date:   2023-12-6 10:45:00 +0000
+categories: linux
+---
 - Methodology
   - Identify the problem
     - Gather information

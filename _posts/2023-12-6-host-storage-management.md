@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Host Storage Management"
+date:   2023-12-6 10:44:00 +0000
+categories: linux
+---
 - Physical Storage
 - List disk and partition tables:
   - `fdisk -l`
