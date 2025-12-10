@@ -1,0 +1,67 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+# Define common checkout step as a reusable anchor
+.checkout: &checkout
+  name: Checkout code
+  uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    name: Detect secrets
+    steps:
+      - <<: *checkout
+
+      - name: Gitleaks Secret Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  markdown-lint:
+    runs-on: ubuntu-latest
+    name: Lint Markdown files
+    steps:
+      - <<: *checkout
+
+      - name: Markdown Lint
+        uses: articulate/actions-markdownlint@v1
+        with:
+          config: .markdownlint.json
+          files: '**/*.md'
+          ignore: vendor
+        continue-on-error: true
+
+  jekyll-lint:
+    runs-on: ubuntu-latest
+    name: Validate Jekyll
+    steps:
+      - <<: *checkout
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+
+      - name: Check for build warnings
+        run: |
+          bundle exec jekyll build 2>&1 | tee build.log
+          if grep -i "warning" build.log; then
+            echo "::warning::Jekyll build has warnings"
+          fi
+
+      - name: HTML Proofer
+        run: |
+          gem install html-proofer
+          bundle exec jekyll build
+          htmlproofer ./_site --disable-external --allow-hash-href
+        continue-on-error: true
