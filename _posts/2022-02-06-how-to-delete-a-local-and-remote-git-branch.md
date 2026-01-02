@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "How to delete a local and remote Git branch"
-date: 2022-02-03 14:14:11 -0800
+date: 2022-02-06 14:14:11 -0800
 categories: software-development
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Skip the pipeline when pushing to Git"
-date: 2022-02-03 15:25:13 -0800
+date: 2022-02-07 15:25:13 -0800
 categories: software-development
 ---
 
