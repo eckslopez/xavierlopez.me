@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Key and Certificate Extraction from a .pfx file"
-date: 2022-03-24 09:13:51 -0800
+date: 2022-03-25 09:13:51 -0800
 categories: system-administration
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Run a Rails App Without a Database"
-date: 2022-02-14 20:47:06 -0800
+date: 2022-02-16 20:47:06 -0800
 categories: database software-development
 ---
 
