@@ -1,27 +1,251 @@
 ---
 layout: single
-title:  "Host Storage Management"
-date:   2023-11-29 10:44:00 +0000
-categories: linux
+title: "Host Storage Management: Capacity, Performance, and Failure Modes"
+date: 2023-11-29 10:43:00 +0000
+last_modified_at: 2025-03-17
+categories:
+  - linux
+  - systems
+  - storage
+tags:
+  - storage
+  - capacity-planning
+  - filesystems
+  - performance
+  - troubleshooting
+excerpt: "A practical guide to managing host-level storage, focusing on capacity, performance characteristics, and the failure modes engineers actually encounter in production."
+toc: true
+toc_sticky: true
 ---
-> **Linux Modules**: Code segments that can be dynamically loaded and unloaded into the kernel. They can be removed when they are no longer needed. Modules extend the functionality of the kernel without requiring a reboot. They can configured as built-in or loadable. 
-- List modules in alphabetical order: `lsmod | sort -d | column -t | less`
 
-> **Device Drivers**: a piece of software that allows the operating system to communicate with a specific hardware device. It acts as an interface between the hardware device and the rest of the operating system, facilitating the exchange of data and commands.
-- List device drivers: `lsmod`
+## Context
 
-### Physical Storage
-- List disk and partition tables: `fdisk -l`
-- List mounted filesystems: `findmnt`
-- Show the definitions for partitions, along with a description of how it's mounted: `cat /etc/fstab`
-- Discover what files are open and who's using it: `lsof`
+Host storage problems rarely announce themselves loudly.
 
-### Create a partition to make a newly added disk usable:
-  1. First, go add the disk using hypervisor GUI or CLI.
-  2. Choose the disk you want to partition: `fdisk /dev/<disk-name>`
-  4. Follow the prompts.
-  5. Create a file system on the disk: `sudo mkfs -t ext3 /dev/<disk-partition-name>`
-  7. Create a mount point and mount it to the partition, if you're not going to use LVM1 to manage it: `sudo mkdir /mnt/test && mount /dev/<disk-partition-name> /mnt/test`
-  11. View partitions: `sudo cat /proc/partitions`
+More often, they surface as:
+- gradual performance degradation
+- unrelated services failing mysteriously
+- nodes becoming unstable
+- alerts that don’t clearly point to disk
 
-- List all mounted filesystems. See Master Linux Storage Management with LVM Chapter 3 'Command Line Tools' for the procedure on LVM.
+This post focuses on **host-level storage management**—what actually matters when you’re responsible for keeping systems running, whether on bare metal, virtual machines, or cluster nodes.
+
+---
+
+## What “Host Storage” Really Includes
+
+At the host level, storage is a stack of layers:
+
+- physical disks (HDD, SSD, NVMe)
+- device abstraction (RAID, device-mapper)
+- logical volumes (LVM)
+- filesystems
+- mount points
+- swap
+- ephemeral vs persistent data
+
+Most real failures happen **between layers**, not inside a single one.
+
+---
+
+## Capacity Management (The Quiet Risk)
+
+### Disk Space vs Inodes
+
+Running out of disk space is obvious.  
+Running out of **inodes** is not.
+
+Always check both:
+
+```bash
+df -h
+df -i
+```
+
+You can have plenty of free space and still be unable to create files.
+
+---
+
+### Growth Is Usually Predictable
+
+Common sources of silent growth:
+- application logs
+- metrics and traces
+- caches
+- temporary files
+- crash dumps
+
+The pattern is almost always:
+> slow → steady → ignored → catastrophic
+
+Capacity management is about noticing trends **before** they matter.
+
+---
+
+## Performance Characteristics That Matter
+
+### Random vs Sequential I/O
+
+Different workloads stress disks differently:
+
+- databases and metadata-heavy operations → random I/O
+- logs, backups, streaming writes → sequential I/O
+
+A disk that performs well for one may struggle badly with the other.
+
+---
+
+### Latency Beats Throughput
+
+High throughput with high latency still feels slow.
+
+When diagnosing storage performance:
+- latency spikes are usually more damaging than bandwidth limits
+- shared storage amplifies latency under contention
+
+---
+
+## Swap: Symptom, Not Solution
+
+Swap exists to:
+- absorb memory pressure
+- prevent immediate OOM conditions
+
+But heavy swap usage usually indicates:
+- memory overcommitment
+- poor workload sizing
+- storage-backed performance collapse
+
+Check usage:
+
+```bash
+free -h
+swapon --show
+```
+
+Swap activity often turns memory problems into storage problems.
+
+---
+
+## Finding What’s Using Disk
+
+Start broad:
+
+```bash
+du -sh /*
+```
+
+Then narrow down:
+
+```bash
+du -sh /var/*
+```
+
+Pay special attention to:
+- `/var/log`
+- `/var/lib`
+- application-specific data directories
+
+---
+
+## Deleted Files Still Using Space
+
+A classic and dangerous scenario:
+
+- file is deleted
+- process keeps it open
+- disk space is not reclaimed
+
+Find them:
+
+```bash
+lsof | grep deleted
+```
+
+This is common with:
+- log files
+- rotated output
+- long-running services
+
+---
+
+## Filesystem-Level Issues
+
+### Mount Options Matter
+
+Options like:
+- `noatime`
+- journaling modes
+- write barriers
+
+can materially affect performance and durability.
+
+Default options are safe—but not always optimal.
+
+---
+
+### Corruption and Recovery
+
+Filesystems trade performance for safety differently.
+
+Symptoms of trouble:
+- sudden read-only mounts
+- I/O errors in logs
+- kernel warnings
+
+Never ignore filesystem warnings—they tend to escalate.
+
+---
+
+## Virtualized and Platform Environments
+
+Storage issues compound under abstraction:
+
+- multiple VMs sharing the same physical disks
+- containers writing to host filesystems
+- ephemeral storage filling node disks
+- shared volumes becoming contention points
+
+Host storage problems often appear as:
+- pod evictions
+- CI failures
+- unexplained latency
+- “random” crashes
+
+Always consider the host when higher layers misbehave.
+
+---
+
+## Common Failure Patterns
+
+| Symptom | Likely Cause |
+|------|-------------|
+| Disk full alerts | Log or cache growth |
+| Writes failing with space free | Inode exhaustion |
+| System slow under load | I/O contention |
+| Memory pressure + slowness | Swap thrashing |
+| Space not reclaimed | Deleted open files |
+
+Patterns save time.
+
+---
+
+## What Not to Do
+
+- Don’t assume disks are fast enough
+- Don’t ignore inode usage
+- Don’t treat swap as a fix
+- Don’t debug applications before validating storage health
+- Don’t wait for alerts to investigate growth
+
+---
+
+## Takeaways
+
+- Host storage fails quietly until it doesn’t
+- Capacity is more than free space
+- Performance issues often start with latency
+- Swap usually signals deeper problems
+- Storage issues propagate upward through the stack
+
+If systems feel unstable or unpredictable, **check storage early**—it’s often the root cause hiding in plain sight.

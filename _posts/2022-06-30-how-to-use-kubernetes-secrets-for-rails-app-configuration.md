@@ -1,121 +1,230 @@
 ---
 layout: single
-title: "How to use Kubernetes secrets for Rails App configuration"
-date: 2022-06-30 14:21:46 -0800
-categories: configuration containerization software-development virtualization
+title: "Using Kubernetes Secrets for Rails Application Configuration"
+date: 2022-06-30 09:05:00 +0000
+last_modified_at: 2025-01-14
+categories:
+  - kubernetes
+  - application-configuration
+  - security
+tags:
+  - kubernetes
+  - secrets
+  - rails
+  - configuration
+  - twelve-factor
+excerpt: "How to configure a Rails application using Kubernetes Secrets, why this pattern works well in containerized environments, and what pitfalls to avoid."
+toc: true
+toc_sticky: true
 ---
 
-For Rails apps that I deploy to a Kubernetes cluster, I like to push as much environment configuration as I can to Kubernetes secrets. Here's what my app-config-secret yml looks like:
+## Context
+
+Rails applications have always needed configuration:
+- database credentials
+- API keys
+- encryption secrets
+- environment-specific settings
+
+In containerized environments, baking this information into images or committing it to source control quickly becomes unsafe and inflexible.
+
+Kubernetes Secrets provide a **runtime configuration mechanism** that aligns well with Rails and modern deployment practices—when used correctly.
+
+---
+
+## Why Kubernetes Secrets Work Well for Rails
+
+Rails already expects configuration to arrive via **environment variables**.
+
+This aligns naturally with:
+- the Twelve-Factor App methodology
+- container immutability
+- environment-specific deployments
+
+Kubernetes Secrets allow you to:
+- decouple configuration from images
+- rotate credentials without rebuilding
+- keep sensitive data out of Git
+- scope access tightly via RBAC
+
+---
+
+## What Belongs in a Secret (and What Doesn’t)
+
+Good candidates for Secrets:
+- database passwords
+- Rails `SECRET_KEY_BASE`
+- third-party API keys
+- encryption credentials
+
+Poor candidates:
+- non-sensitive configuration
+- feature flags
+- large blobs of data
+- application logic
+
+If it wouldn’t be a problem to leak, it probably doesn’t belong in a Secret.
+
+---
+
+## Creating a Kubernetes Secret
+
+Secrets can be created imperatively or declaratively.
+
+### Imperative example
+
+```bash
+kubectl create secret generic rails-secrets \
+  --from-literal=DATABASE_PASSWORD=supersecret \
+  --from-literal=SECRET_KEY_BASE=longrandomstring
+```
+
+This is quick, but not ideal for versioned infrastructure.
+
+---
+
+### Declarative example (recommended)
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: app-name
-  namespace: app-namespace-name
-data:
-  db_host: base64-encoded-value
-  db_name: base64-encoded-value
-  db_username: base64-encoded-value
-  db_password: base64-encoded-value
-  db_port: base64-encoded-value
-  secret_key_base: base64-encoded-value
-  rails_serve_static_files: base64-encoded-value
+  name: rails-secrets
+type: Opaque
+stringData:
+  DATABASE_PASSWORD: supersecret
+  SECRET_KEY_BASE: longrandomstring
 ```
 
-I like to put the secret_key_base and rails_serve_static_files keys in this secret, in addition to the db connection keys, but let's ignore those for the purposes of this post.  
+Declarative secrets integrate cleanly with GitOps workflows (with proper encryption or secret management).
 
-The thing is, you have to [base 64](https://linux.die.net/man/1/base64) encode these values before you stuff them in this secret. Let's do that with a boolean string and test it out by decoding it:
+---
 
-```bash
-echo 'true' | base64
-# Output: dHJ1ZQ==
+## Injecting Secrets into a Rails Pod
 
-echo 'dHJ1ZQ==' | base64 -D
-# Output: true
-```
+### As Environment Variables
 
-Now do that to all the values you want to put in the Secret manifest file above, then run:
-
-```bash
-kubectl apply -f /path/to/the/secrets/file.yml
-``` 
-
-That will turn those values into environment variables that can be accessed by your application. First, edit your database.yml to look like this:
+This is the most common and Rails-friendly approach.
 
 ```yaml
-your_environment:
-  <<: *default
-  host: <%= ENV['DB_HOST'] %>
-  database: <%= ENV['DB_NAME'] %>
-  username: <%= ENV['DB_USER_NAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  port: <%= ENV['DB_PORT'] %>
+env:
+  - name: DATABASE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: rails-secrets
+        key: DATABASE_PASSWORD
+  - name: SECRET_KEY_BASE
+    valueFrom:
+      secretKeyRef:
+        name: rails-secrets
+        key: SECRET_KEY_BASE
 ```
 
-Then edit your application deployment yml to access the environment variables from the secret, thusly:
+Rails will automatically read these via `ENV`.
+
+---
+
+### As a Group
+
+For larger sets of values:
 
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: app-name
-  name: app-name
-  namespace: app-namespace-name
-spec:
-  replicas: 3
-  revisionHistoryLimit: 2
-  selector:
-    matchLabels:
-      app: app-name
-  template:
-    metadata:
-      labels:
-        app: app-name
-    spec:
-      imagePullSecrets:
-      - name: the-docker-hub-secret  # (a different conversation)
-      containers:
-      - name: app-name
-        image: your-repo/image-name:tag
-        command: ["/bin/sh", "-c","rake db:migrate && rake db:seed && rails server --port 3000 --binding 0.0.0.0"]
-        env:
-        - name: DB_HOST
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: db_host
-        - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: db_name
-        - name: DB_USER_NAME
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: db_username
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: db_password
-        - name: DB_PORT
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: db_port
-        - name: SECRET_KEY_BASE
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: secret_key_base
-        - name: RAILS_SERVE_STATIC_FILES
-          valueFrom:
-            secretKeyRef:
-              name: app-name-secrets  # (whatever you named it)
-              key: rails_serve_static_files
+envFrom:
+  - secretRef:
+      name: rails-secrets
 ```
 
-That'll do it.
+This keeps manifests cleaner but makes it easier to accidentally expose unused values.
+
+---
+
+## Configuring Rails to Use Environment Variables
+
+In `config/database.yml`:
+
+```yaml
+production:
+  adapter: postgresql
+  database: myapp_production
+  username: myapp
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: db.example.com
+```
+
+For secrets like `SECRET_KEY_BASE`, Rails already expects an environment variable in production.
+
+---
+
+## Secret Rotation and Deployments
+
+Kubernetes does **not** automatically restart pods when Secrets change.
+
+Common patterns:
+- manually restart deployments
+- trigger rollouts via CI/CD
+- annotate pods to force restarts
+
+Plan for rotation explicitly—don’t assume it happens automatically.
+
+---
+
+## Security Considerations
+
+### Access Control
+
+Secrets are only as secure as:
+- namespace boundaries
+- RBAC policies
+- who can read them
+
+Avoid:
+- granting `get secrets` broadly
+- using default service accounts
+- sharing namespaces unnecessarily
+
+---
+
+### Visibility and Leakage
+
+Remember:
+- environment variables can appear in logs
+- crash dumps may include env state
+- anyone with pod exec access can read them
+
+Secrets reduce risk—but don’t eliminate it.
+
+---
+
+## Alternatives and Complements
+
+Kubernetes Secrets are often combined with:
+- external secret managers (Vault, AWS Secrets Manager)
+- sealed secrets
+- encrypted GitOps workflows
+
+For higher-risk environments, native Secrets are a building block—not the entire solution.
+
+---
+
+## Common Failure Modes
+
+| Symptom | Likely Cause |
+|------|-------------|
+| App fails to boot | Missing secret or typo |
+| Works locally, fails in prod | Secret not mounted |
+| Secret updated, app unchanged | Pod not restarted |
+| Credentials leaked | Over-permissive access |
+
+Most issues are operational, not Rails-specific.
+
+---
+
+## Takeaways
+
+- Rails aligns naturally with env-based configuration
+- Kubernetes Secrets decouple config from images
+- Declarative management improves safety
+- Rotation requires explicit action
+- RBAC determines real security boundaries
+
+Used carefully, Kubernetes Secrets provide a clean, scalable way to manage Rails configuration in production.
