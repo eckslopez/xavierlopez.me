@@ -1,134 +1,284 @@
 ---
 layout: single
-title: "Kubernetes Cluster Configuration"
-date: 2023-08-15 15:58:13 -0800
-categories: configuration kubernetes
+title: "Kubernetes Cluster Configuration: Decisions That Shape Everything"
+date: 2023-08-15 09:30:00 +0000
+last_modified_at: 2025-05-06
+categories:
+  - kubernetes
+  - platform
+  - systems
+tags:
+  - kubernetes
+  - cluster-configuration
+  - control-plane
+  - networking
+  - security
+  - operations
+excerpt: "A practical guide to Kubernetes cluster configuration, focusing on the early decisions that determine security, reliability, and operational sanity."
+toc: true
+toc_sticky: true
 ---
 
-I was in the process of installing [Prometheus](https://prometheus.io/docs/introduction/overview/) and needed to have a couple of features enabled in an on-premises cluster, but didn't know where to get and set that information.  My research uncovered these handy little command lines for viewing two of the most important configurations in your cluster. The first is for the [kubelet](https://kubernetes.io/docs/concepts/overview/components/#kubelet).  The kubelet-config is one the sources from which the kubelet reads its configuration.  
+## Context
 
-```
-kubectl describe cm kubeadm-config -n kube-system 
+Most Kubernetes problems are **configuration problems that started months earlier**.
 
-Name: kubelet-config
-Namespace: kube-system
-Labels:
-Annotations:
+Cluster configuration choices—often made during initial setup—quietly define:
+- what’s possible later
+- what’s painful to change
+- how failures manifest
+- how secure and observable the system can be
 
-Data
+This post focuses on **cluster-level configuration**, not application YAML. These are the decisions that shape everything built on top.
 
-kubelet:
+---
 
-apiVersion: kubelet.config.k8s.io/v1beta1
-authentication:
-anonymous:
-enabled: false
-webhook:
-cacheTTL: 0s
-enabled: true
-x509:
-clientCAFile: /var/lib/minikube/certs/ca.crt
-authorization:
-mode: Webhook
-webhook:
-cacheAuthorizedTTL: 0s
-cacheUnauthorizedTTL: 0s
-cgroupDriver: systemd
-clusterDNS:
-- 10.96.0.10
-clusterDomain: cluster.local
-containerRuntimeEndpoint: ""
-cpuManagerReconcilePeriod: 0s
-evictionHard:
-imagefs.available: 0%
-nodefs.available: 0%
-nodefs.inodesFree: 0%
-evictionPressureTransitionPeriod: 0s
-failSwapOn: false
-fileCheckFrequency: 0s
-hairpinMode: hairpin-veth
-healthzBindAddress: 127.0.0.1
-healthzPort: 10248
-httpCheckFrequency: 0s
-imageGCHighThresholdPercent: 100
-imageMinimumGCAge: 0s
-kind: KubeletConfiguration
-logging:
-flushFrequency: 0
-options:
-json:
-infoBufferSize: "0"
-verbosity: 0
-memorySwap: {}
-nodeStatusReportFrequency: 0s
-nodeStatusUpdateFrequency: 0s
-rotateCertificates: true
-runtimeRequestTimeout: 15m0s
-shutdownGracePeriod: 0s
-shutdownGracePeriodCriticalPods: 0s
-staticPodPath: /etc/kubernetes/manifests
-streamingConnectionIdleTimeout: 0s
-syncFrequency: 0s
-volumeStatsAggPeriod: 0s
+## What “Cluster Configuration” Actually Means
 
-BinaryData
-====
-Events: <none>
-```
+Cluster configuration lives below workloads and above infrastructure. It includes:
 
-That's the output from my [Minikube](https://minikube.sigs.k8s.io/docs/). As you can see, it's verbose. Have fun configuring.
+- control plane settings
+- node configuration
+- networking model
+- authentication and authorization
+- admission control
+- default policies and limits
+- observability and logging foundations
 
-If you used [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/) to provision your cluster, then you can use  this next example to read  the ConfigMap for kubeadm:
+These are **platform decisions**, not app decisions.
 
-```
-kubectl describe cm kubeadm-config -n kube-system
-Name:         kubeadm-config
-Namespace:    kube-system
-Labels:       <none>
-Annotations:  <none>
+---
 
-Data
-====
-ClusterConfiguration:
-----
-apiServer:
-  certSANs:
-  - 127.0.0.1
-  - localhost
-  - 192.168.49.2
-  extraArgs:
-    authorization-mode: Node,RBAC
-    enable-admission-plugins: NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota
-  timeoutForControlPlane: 4m0s
-apiVersion: kubeadm.k8s.io/v1beta3
-certificatesDir: /var/lib/minikube/certs
-clusterName: mk
-controlPlaneEndpoint: control-plane.minikube.internal:8443
-controllerManager:
-  extraArgs:
-    allocate-node-cidrs: "true"
-    leader-elect: "false"
-dns: {}
-etcd:
-  local:
-    dataDir: /var/lib/minikube/etcd
-    extraArgs:
-      proxy-refresh-interval: "70000"
-imageRepository: registry.k8s.io
-kind: ClusterConfiguration
-kubernetesVersion: v1.27.3
-networking:
-  dnsDomain: cluster.local
-  podSubnet: 10.244.0.0/16
-  serviceSubnet: 10.96.0.0/12
-scheduler:
-  extraArgs:
-    leader-elect: "false"
+## Control Plane Configuration
 
-BinaryData
-====
+### API Server
 
-Events:  <none>
-```
+The API server is the front door to the cluster.
 
-These are exceedingly important ConfigMaps to be familiar with, as they are fundamental to your cluster, so it's a good idea to have these command lines quickly available. Thanks for reading!
+Key considerations:
+- authentication methods
+- authorization mode (RBAC)
+- admission plugins enabled
+- audit logging
+- API exposure and access paths
+
+Misconfiguration here shows up as:
+- brittle access control
+- noisy audit logs
+- confusing permission errors
+- security gaps
+
+---
+
+### etcd
+
+etcd is the cluster’s source of truth.
+
+Operational realities:
+- latency matters more than throughput
+- disk performance is critical
+- backups must be tested, not assumed
+- corruption is rare but catastrophic
+
+A healthy control plane depends on a boring, reliable etcd.
+
+---
+
+## Node Configuration
+
+### Node Roles and Responsibility
+
+Nodes are not interchangeable in practice.
+
+Consider:
+- control plane vs worker separation
+- dedicated system nodes
+- taints and tolerations
+- workload isolation
+
+Clear boundaries prevent accidental blast radius.
+
+---
+
+### OS and Runtime Choices
+
+Node configuration includes:
+- operating system
+- kernel settings
+- container runtime
+- system services
+
+Inconsistent node configuration leads to:
+- unpredictable scheduling
+- subtle performance differences
+- hard-to-debug failures
+
+Uniformity is an operational advantage.
+
+---
+
+## Networking Model
+
+### CNI Selection
+
+Your CNI defines:
+- pod networking semantics
+- performance characteristics
+- network policy capabilities
+- operational complexity
+
+Changing CNIs later is painful. Choose deliberately.
+
+---
+
+### Service and Ingress Strategy
+
+Cluster configuration determines:
+- service CIDRs
+- load balancer integration
+- ingress controllers
+- traffic entry points
+
+Ambiguity here results in:
+- duplicated tooling
+- unclear ownership
+- inconsistent routing behavior
+
+---
+
+## Authentication and Authorization
+
+### Identity Integration
+
+Clusters rarely live in isolation.
+
+Plan for:
+- external identity providers
+- service account usage
+- workload identity patterns
+
+Identity decisions affect:
+- security posture
+- auditability
+- developer experience
+
+---
+
+### RBAC Defaults
+
+RBAC complexity grows quickly.
+
+Good practices:
+- start restrictive
+- create reusable roles
+- avoid cluster-admin sprawl
+- document access models
+
+RBAC debt accumulates silently.
+
+---
+
+## Admission Control and Policy
+
+Admission controllers are where **cluster intent** becomes enforceable.
+
+Common uses:
+- security baselines
+- resource limits
+- image policy
+- namespace standards
+
+Policy at admission time:
+- prevents bad states
+- reduces reliance on reviews
+- encodes expectations directly into the platform
+
+---
+
+## Resource Defaults and Limits
+
+Clusters without defaults invite abuse—intentional or not.
+
+Consider:
+- default requests and limits
+- quota per namespace
+- priority classes
+- eviction behavior
+
+Without guardrails, noisy neighbors are inevitable.
+
+---
+
+## Observability Foundations
+
+### Logging
+
+Decide early:
+- what logs are collected
+- where they go
+- retention periods
+- access controls
+
+Retroactively reconstructing logs is painful.
+
+---
+
+### Metrics
+
+Metrics underpin:
+- autoscaling
+- capacity planning
+- alerting
+
+Inconsistent metrics make automation unreliable.
+
+---
+
+## Upgrade and Change Strategy
+
+Clusters evolve.
+
+Plan for:
+- Kubernetes version upgrades
+- node replacement
+- CNI changes
+- API deprecations
+
+A cluster that can’t be upgraded safely is already broken.
+
+---
+
+## Common Failure Patterns
+
+| Symptom | Root Cause |
+|------|-----------|
+| Inconsistent pod behavior | Node drift |
+| RBAC confusion | Ad-hoc role growth |
+| Networking surprises | Implicit defaults |
+| Security gaps | Missing admission controls |
+| Painful upgrades | Early shortcuts |
+
+Most issues trace back to early configuration decisions.
+
+---
+
+## What Not to Do
+
+- Don’t treat cluster config as “set and forget”
+- Don’t defer security and policy decisions
+- Don’t mix experimental and production settings
+- Don’t rely on tribal knowledge
+
+Clusters outlive their original authors.
+
+---
+
+## Takeaways
+
+- Cluster configuration is platform architecture
+- Early decisions have long tails
+- Uniformity reduces operational cost
+- Policy and defaults prevent outages
+- A well-configured cluster fades into the background
+
+Good cluster configuration isn’t flashy—but it’s the difference between firefighting and operating calmly at scale.
