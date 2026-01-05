@@ -163,6 +163,7 @@ rpm -qa | grep chef
 ```
 
 Older systems often show something like:
+
 ```
 chef-12.x.x-1.el6.x86_64
 ```

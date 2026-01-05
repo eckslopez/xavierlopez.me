@@ -47,11 +47,13 @@ systemctl status sysstat
 ### Enable data collection
 
 Edit:
+
 ```bash
 sudo vim /etc/default/sysstat
 ```
 
 Ensure:
+
 ```bash
 ENABLED="true"
 ```
@@ -215,6 +217,7 @@ It’s authoritative.
 If monitoring tools disagree, `/proc` usually wins.
 
 Learn more:
+
 ```bash
 man procfs
 ```

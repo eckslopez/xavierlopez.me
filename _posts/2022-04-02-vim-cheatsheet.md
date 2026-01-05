@@ -43,11 +43,13 @@ If Vim feels confusing, it’s usually a mode issue.
 ## Basic Navigation
 
 Move the cursor:
+
 ```
 h  j  k  l
 ```
 
 Word movement:
+
 ```ruby
 w   next word
 b   previous word
@@ -55,6 +57,7 @@ e   end of word
 ```
 
 Line movement:
+
 ```bash
 0   start of line
 ^   first non-blank character
@@ -62,6 +65,7 @@ $   end of line
 ```
 
 File movement:
+
 ```
 gg  top of file
 G   bottom of file
@@ -72,6 +76,7 @@ G   bottom of file
 ## Insert Mode
 
 Enter insert mode:
+
 ```sql
 i   insert before cursor
 a   insert after cursor
@@ -80,6 +85,7 @@ O   open new line above
 ```
 
 Exit insert mode:
+
 ```
 Esc
 ```
@@ -91,6 +97,7 @@ Returning to Normal mode quickly is essential.
 ## Editing Text
 
 Delete:
+
 ```sql
 x       delete character
 dd      delete line
@@ -99,6 +106,7 @@ d$      delete to end of line
 ```
 
 Change:
+
 ```ruby
 cw      change word
 cc      change line
@@ -106,6 +114,7 @@ c$      change to end of line
 ```
 
 Undo and redo:
+
 ```
 u       undo
 Ctrl-r  redo
@@ -116,17 +125,20 @@ Ctrl-r  redo
 ## Copy, Cut, and Paste
 
 Yank (copy):
+
 ```
 yy      yank line
 yw      yank word
 ```
 
 Delete (cut):
+
 ```
 dd
 ```
 
 Paste:
+
 ```
 p       paste after cursor
 P       paste before cursor
@@ -139,6 +151,7 @@ Vim treats delete as a form of cut.
 ## Visual Mode (Selecting Text)
 
 Enter visual mode:
+
 ```
 v       character-wise
 V       line-wise
@@ -146,6 +159,7 @@ Ctrl-v  block-wise
 ```
 
 After selecting:
+
 ```sql
 y       yank
 d       delete
@@ -160,22 +174,26 @@ Visual mode makes structural edits safer.
 ## Searching
 
 Search forward:
+
 ```
 /pattern
 ```
 
 Search backward:
+
 ```
 ?pattern
 ```
 
 Navigate results:
+
 ```
 n       next match
 N       previous match
 ```
 
 Clear search highlighting:
+
 ```vim
 :noh
 ```
@@ -185,16 +203,19 @@ Clear search highlighting:
 ## Replace
 
 Replace in the current line:
+
 ```vim
 :s/old/new/
 ```
 
 Replace globally in file:
+
 ```
 :%s/old/new/g
 ```
 
 Confirm each replacement:
+
 ```
 :%s/old/new/gc
 ```
@@ -206,26 +227,31 @@ Search and replace is one of Vim’s strongest features.
 ## Working with Files
 
 Save file:
+
 ```vim
 :w
 ```
 
 Quit:
+
 ```vim
 :q
 ```
 
 Save and quit:
+
 ```vim
 :wq
 ```
 
 Quit without saving:
+
 ```vim
 :q!
 ```
 
 Open a file:
+
 ```vim
 :e filename
 ```
@@ -235,16 +261,19 @@ Open a file:
 ## Splits and Windows
 
 Horizontal split:
+
 ```vim
 :split
 ```
 
 Vertical split:
+
 ```vim
 :vsplit
 ```
 
 Move between splits:
+
 ```
 Ctrl-w h
 Ctrl-w j
@@ -253,6 +282,7 @@ Ctrl-w l
 ```
 
 Close a split:
+
 ```vim
 :close
 ```
@@ -264,17 +294,20 @@ Splits work well for side-by-side comparisons.
 ## Useful Quality-of-Life Commands
 
 Repeat last command:
+
 ```
 .
 ```
 
 Indent selection:
+
 ```
 >>
 <<
 ```
 
 Auto-indent file:
+
 ```ini
 gg=G
 ```

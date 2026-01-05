@@ -22,6 +22,7 @@ toc_sticky: true
 `git log` is one of Git’s most powerful tools—and one of the most underused.
 
 Most people stop at:
+
 ```bash
 git log
 ```
