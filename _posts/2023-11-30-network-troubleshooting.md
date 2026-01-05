@@ -95,6 +95,7 @@ nc -vz <host> <port>
 ```
 
 Or with curl:
+
 ```bash
 curl -v http://<host>:<port>
 ```
