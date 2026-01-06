@@ -44,13 +44,13 @@ If Vim feels confusing, it’s usually a mode issue.
 
 Move the cursor:
 
-```
+```vim
 h  j  k  l
 ```
 
 Word movement:
 
-```ruby
+```vim
 w   next word
 b   previous word
 e   end of word
@@ -58,7 +58,7 @@ e   end of word
 
 Line movement:
 
-```bash
+```vim
 0   start of line
 ^   first non-blank character
 $   end of line
@@ -66,7 +66,7 @@ $   end of line
 
 File movement:
 
-```
+```vim
 gg  top of file
 G   bottom of file
 ```
@@ -77,7 +77,7 @@ G   bottom of file
 
 Enter insert mode:
 
-```sql
+```vim
 i   insert before cursor
 a   insert after cursor
 o   open new line below
@@ -86,7 +86,7 @@ O   open new line above
 
 Exit insert mode:
 
-```
+```vim
 Esc
 ```
 
@@ -98,7 +98,7 @@ Returning to Normal mode quickly is essential.
 
 Delete:
 
-```sql
+```vim
 x       delete character
 dd      delete line
 dw      delete word
@@ -107,7 +107,7 @@ d$      delete to end of line
 
 Change:
 
-```ruby
+```vim
 cw      change word
 cc      change line
 c$      change to end of line
@@ -115,7 +115,7 @@ c$      change to end of line
 
 Undo and redo:
 
-```
+```vim
 u       undo
 Ctrl-r  redo
 ```
@@ -126,20 +126,20 @@ Ctrl-r  redo
 
 Yank (copy):
 
-```
+```vim
 yy      yank line
 yw      yank word
 ```
 
 Delete (cut):
 
-```
+```vim
 dd
 ```
 
 Paste:
 
-```
+```vim
 p       paste after cursor
 P       paste before cursor
 ```
@@ -152,7 +152,7 @@ Vim treats delete as a form of cut.
 
 Enter visual mode:
 
-```
+```vim
 v       character-wise
 V       line-wise
 Ctrl-v  block-wise
@@ -160,7 +160,7 @@ Ctrl-v  block-wise
 
 After selecting:
 
-```sql
+```vim
 y       yank
 d       delete
 >       indent
@@ -175,19 +175,19 @@ Visual mode makes structural edits safer.
 
 Search forward:
 
-```
+```vim
 /pattern
 ```
 
 Search backward:
 
-```
+```vim
 ?pattern
 ```
 
 Navigate results:
 
-```
+```vim
 n       next match
 N       previous match
 ```
@@ -210,13 +210,13 @@ Replace in the current line:
 
 Replace globally in file:
 
-```
+```vim
 :%s/old/new/g
 ```
 
 Confirm each replacement:
 
-```
+```vim
 :%s/old/new/gc
 ```
 
@@ -274,7 +274,7 @@ Vertical split:
 
 Move between splits:
 
-```
+```vim
 Ctrl-w h
 Ctrl-w j
 Ctrl-w k
@@ -295,20 +295,20 @@ Splits work well for side-by-side comparisons.
 
 Repeat last command:
 
-```
+```vim
 .
 ```
 
 Indent selection:
 
-```
+```vim
 >>
 <<
 ```
 
 Auto-indent file:
 
-```ini
+```vim
 gg=G
 ```
 
