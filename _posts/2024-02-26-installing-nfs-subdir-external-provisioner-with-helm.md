@@ -2,7 +2,7 @@
 layout: single
 title: "Installing the NFS Subdir External Provisioner with Helm"
 date: 2024-02-26 08:00:00 +0000
-last_modified_at: 2025-01-08
+last_modified_at: "2025-01-08"
 categories:
   - kubernetes
   - storage
@@ -24,6 +24,7 @@ Understanding how Kubernetes storage works is one thing.
 Actually **enabling** that capability in a cluster is another.
 
 If you want dynamic NFS-backed Persistent Volumes, Kubernetes needs a component that can:
+
 - watch for PersistentVolumeClaims
 - create directories on an NFS server
 - register those directories as PersistentVolumes
@@ -37,6 +38,7 @@ This post focuses on installing it intentionally using Helm—and understanding 
 ## What This Provisioner Does
 
 The NFS Subdir External Provisioner:
+
 - runs as a pod in your cluster
 - listens for PVCs referencing its StorageClass
 - creates subdirectories on an external NFS server
@@ -64,7 +66,7 @@ If the NFS server isn’t healthy, this installation will succeed—but provisio
 
 First, add the Helm repository that hosts the chart:
 
-```
+```sql
 helm repo add nfs-subdir-external-provisioner \
   https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
 
@@ -81,7 +83,7 @@ The core installation uses `helm install` with a small but important set of valu
 
 Example:
 
-```
+```sql
 helm install nfs-provisioner \
   nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
   --namespace storage-system \
@@ -94,12 +96,15 @@ helm install nfs-provisioner \
 Key values explained:
 
 - `nfs.server`  
+
   Address of the external NFS server
 
 - `nfs.path`  
+
   Base directory where subdirectories will be created
 
 - `storageClass.name`  
+
   The StorageClass PVCs will reference
 
 This command installs the provisioner and registers a new StorageClass.
@@ -122,13 +127,13 @@ Helm handles object creation, but **you are responsible** for understanding the 
 
 Check that the pod is running:
 
-```
+```bash
 kubectl get pods -n storage-system
 ```
 
 Confirm the StorageClass exists:
 
-```
+```bash
 kubectl get storageclass
 ```
 
@@ -140,7 +145,7 @@ You should see the `managed-nfs` StorageClass listed.
 
 Create a simple PVC referencing the StorageClass:
 
-```
+```bash
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -157,6 +162,7 @@ EOF
 ```
 
 If provisioning works:
+
 - a PersistentVolume will be created automatically
 - a new directory will appear on the NFS server
 - the PVC will bind successfully
@@ -185,12 +191,14 @@ Most failures are external to Kubernetes.
 ## When This Is (and Isn’t) the Right Choice
 
 This approach works well for:
+
 - shared storage
 - development clusters
 - on-prem environments
 - workloads needing `ReadWriteMany`
 
 It may not be appropriate for:
+
 - high-performance databases
 - latency-sensitive workloads
 - cloud-native block storage replacements

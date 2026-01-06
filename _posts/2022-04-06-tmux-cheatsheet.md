@@ -2,7 +2,7 @@
 layout: single
 title: "tmux Cheatsheet: Practical Commands for Daily Use"
 date: 2022-04-06 08:20:00 +0000
-last_modified_at: 2025-01-16
+last_modified_at: "2025-01-16"
 categories:
   - cli
   - productivity
@@ -22,6 +22,7 @@ toc_sticky: true
 `tmux` is one of those tools that quietly becomes indispensable.
 
 If you:
+
 - work over SSH
 - manage multiple shells
 - run long-lived processes
@@ -47,27 +48,32 @@ Almost all commands start with the prefix.
 ## Sessions
 
 Create a new session:
-```
+
+```bash
 tmux new -s mysession
 ```
 
 List sessions:
-```
+
+```bash
 tmux ls
 ```
 
 Attach to a session:
-```
+
+```bash
 tmux attach -t mysession
 ```
 
 Detach from session:
-```
+
+```bash
 Ctrl-b d
 ```
 
 Rename the current session:
-```
+
+```bash
 Ctrl-b $
 ```
 
@@ -78,22 +84,26 @@ Sessions are what make `tmux` powerful over unreliable connections.
 ## Windows
 
 Create a new window:
-```
+
+```bash
 Ctrl-b c
 ```
 
 List windows:
-```
+
+```bash
 Ctrl-b w
 ```
 
 Rename current window:
-```
+
+```bash
 Ctrl-b ,
 ```
 
 Switch to window by number:
-```
+
+```bash
 Ctrl-b 0
 Ctrl-b 1
 ```
@@ -105,22 +115,26 @@ Windows are best used to separate **tasks**, not layouts.
 ## Panes
 
 Split horizontally:
-```
+
+```bash
 Ctrl-b "
 ```
 
 Split vertically:
-```
+
+```bash
 Ctrl-b %
 ```
 
 Move between panes:
-```
+
+```bash
 Ctrl-b ← ↑ → ↓
 ```
 
 Resize panes:
-```
+
+```bash
 Ctrl-b Ctrl-←
 Ctrl-b Ctrl-→
 Ctrl-b Ctrl-↑
@@ -128,7 +142,8 @@ Ctrl-b Ctrl-↓
 ```
 
 Close the current pane:
-```
+
+```bash
 Ctrl-b x
 ```
 
@@ -139,27 +154,32 @@ Panes are ideal for **contextual work**, not permanent separation.
 ## Copy Mode (Scrolling and Selection)
 
 Enter copy mode:
-```
+
+```bash
 Ctrl-b [
 ```
 
 Navigate using:
+
 - arrow keys
 - Page Up / Page Down
 - Vim-style keys (if configured)
 
 Start selection:
-```
+
+```bash
 Space
 ```
 
 Copy selection:
-```
+
+```bash
 Enter
 ```
 
 Paste buffer:
-```
+
+```bash
 Ctrl-b ]
 ```
 
@@ -170,14 +190,16 @@ Copy mode is essential when reviewing logs or command output.
 ## Search in Output
 
 Inside copy mode:
-```
+
+```bash
 /
 ```
 
 Then type your search string and press Enter.
 
 Repeat search:
-```
+
+```bash
 n
 ```
 
@@ -188,18 +210,21 @@ Searching output beats rerunning commands—especially in production.
 ## Pane and Window Management
 
 Swap panes:
-```
+
+```bash
 Ctrl-b {
 Ctrl-b }
 ```
 
 Break pane into a new window:
-```
+
+```bash
 Ctrl-b !
 ```
 
 Kill the current window:
-```
+
+```bash
 Ctrl-b &
 ```
 
@@ -210,17 +235,20 @@ Reorganizing layouts quickly is one of tmux’s biggest strengths.
 ## Status and Information
 
 Show time:
-```
+
+```bash
 Ctrl-b t
 ```
 
 Display pane numbers:
-```
+
+```bash
 Ctrl-b q
 ```
 
 Reload tmux config:
-```
+
+```bash
 Ctrl-b :source-file ~/.tmux.conf
 ```
 
@@ -231,11 +259,13 @@ Useful when iterating on configuration.
 ## Working Over SSH
 
 A common pattern:
+
 - start tmux on the remote host
 - attach once
 - leave it running indefinitely
 
 If your connection drops:
+
 - reconnect
 - reattach
 - everything is still there

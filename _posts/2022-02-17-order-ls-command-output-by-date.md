@@ -2,7 +2,7 @@
 layout: single
 title: "Order `ls` Command Output by Date"
 date: 2022-02-17 08:00:00 +0000
-last_modified_at: 2025-01-07
+last_modified_at: "2025-01-07"
 categories:
   - linux
   - cli
@@ -22,6 +22,7 @@ toc_sticky: true
 When investigating files, **order matters**.
 
 Whether you’re checking logs, build artifacts, or recently modified configs, seeing files in the right order can immediately surface:
+
 - what changed most recently
 - what hasn’t changed in a long time
 - which files are actively being written
@@ -34,7 +35,7 @@ The `ls` command provides several ways to sort output by time—if you know whic
 
 By default, `ls` sorts alphabetically:
 
-```
+```bash
 ls
 ```
 
@@ -46,13 +47,14 @@ This is rarely helpful when you care about **recency**.
 
 To sort files by modification time (newest first):
 
-```
+```bash
 ls -lt
 ```
 
 This is the most commonly used time-based sort.
 
 Flags explained:
+
 - `-l` → long listing format
 - `-t` → sort by modification time
 
@@ -64,13 +66,14 @@ Newest files appear at the top.
 
 To show the **oldest files first**:
 
-```
+```bash
 ls -ltr
 ```
 
 The `-r` flag reverses the sort order.
 
 This is useful when you want to see:
+
 - what changed earliest
 - long-lived files
 - stale artifacts
@@ -95,18 +98,19 @@ Different flags expose different timestamps.
 
 To sort by metadata change time:
 
-```
+```bash
 ls -ltc
 ```
 
 This is useful when:
+
 - permissions were changed
 - files were moved or renamed
 - ownership was updated
 
 Combine with reverse order:
 
-```
+```bash
 ls -ltcr
 ```
 
@@ -116,11 +120,12 @@ ls -ltcr
 
 To sort by last access time:
 
-```
+```bash
 ls -ltu
 ```
 
 This can help identify:
+
 - files that are still being read
 - unused files
 - unexpected access patterns
@@ -133,13 +138,13 @@ Note that many systems disable or relax atime updates for performance reasons.
 
 To see only the most recent entries:
 
-```
+```bash
 ls -lt | head
 ```
 
 Or the oldest:
 
-```
+```bash
 ls -ltr | head
 ```
 
@@ -153,13 +158,13 @@ Hidden files are often the ones that matter most.
 
 Include them with:
 
-```
+```bash
 ls -lat
 ```
 
 Combine as needed:
 
-```
+```bash
 ls -latr
 ```
 
@@ -169,19 +174,19 @@ ls -latr
 
 See the most recently modified files in `/var/log`:
 
-```
+```bash
 ls -lt /var/log | head
 ```
 
 Find old files in a directory:
 
-```
+```bash
 ls -ltr | head
 ```
 
 Inspect recent config changes:
 
-```
+```bash
 ls -lt /etc
 ```
 

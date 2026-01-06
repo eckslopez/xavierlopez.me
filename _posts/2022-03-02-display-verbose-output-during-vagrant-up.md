@@ -2,7 +2,7 @@
 layout: single
 title: "Display Verbose Output During `vagrant up`"
 date: 2022-03-02 08:00:00 +0000
-last_modified_at: 2025-01-09
+last_modified_at: "2025-01-09"
 categories:
   - virtualization
   - cli
@@ -30,6 +30,7 @@ This post shows how to enable verbose logging and how to use it effectively.
 ## Why Verbose Output Helps
 
 Verbose output exposes:
+
 - provider interactions (VirtualBox, VMware, libvirt)
 - SSH connection attempts
 - provisioning steps and hooks
@@ -46,7 +47,7 @@ Without verbosity, many failures look identical—even when they’re not.
 
 Run `vagrant up` with the `--debug` flag:
 
-```
+```bash
 vagrant up --debug
 ```
 
@@ -58,11 +59,12 @@ This enables detailed logging across Vagrant’s execution path.
 
 Verbose output can be overwhelming. Redirecting it to a file makes it easier to inspect:
 
-```
+```bash
 vagrant up --debug > vagrant-debug.log 2>&1
 ```
 
 This captures:
+
 - standard output
 - error output
 - debug logs
@@ -77,13 +79,13 @@ Vagrant uses log levels internally.
 
 You can explicitly control them:
 
-```
+```ini
 VAGRANT_LOG=debug vagrant up
 ```
 
 For even more detail:
 
-```
+```ini
 VAGRANT_LOG=trace vagrant up
 ```
 
@@ -94,6 +96,7 @@ Use `trace` sparingly—it is extremely verbose.
 ## What to Look for in Debug Output
 
 Key sections worth focusing on:
+
 - provider initialization
 - SSH key exchange and connection attempts
 - provisioning scripts and exit codes
@@ -101,6 +104,7 @@ Key sections worth focusing on:
 - plugin load errors
 
 Search for:
+
 - `ERROR`
 - `WARN`
 - `exit status`
@@ -113,6 +117,7 @@ Noise is expected—patterns matter more than individual lines.
 ## Common Problems Revealed by Verbose Mode
 
 Verbose output often surfaces:
+
 - mismatched provider versions
 - missing kernel modules
 - SSH handshake failures
@@ -126,6 +131,7 @@ These problems are frequently invisible at default verbosity.
 ## When Verbose Output Is Especially Useful
 
 Turn on verbosity when:
+
 - `vagrant up` fails without explanation
 - provisioning hangs indefinitely
 - networking doesn’t behave as expected
@@ -139,6 +145,7 @@ Verbose logs make failures reproducible and diagnosable.
 ## When to Turn It Off
 
 Verbose output is **not** ideal for:
+
 - routine development workflows
 - quick iteration loops
 - normal provisioning
