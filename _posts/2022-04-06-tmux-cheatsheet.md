@@ -67,13 +67,13 @@ tmux attach -t mysession
 
 Detach from session:
 
-```
+```bash
 Ctrl-b d
 ```
 
 Rename the current session:
 
-```
+```bash
 Ctrl-b $
 ```
 
@@ -85,25 +85,25 @@ Sessions are what make `tmux` powerful over unreliable connections.
 
 Create a new window:
 
-```
+```bash
 Ctrl-b c
 ```
 
 List windows:
 
-```
+```bash
 Ctrl-b w
 ```
 
 Rename current window:
 
-```
+```bash
 Ctrl-b ,
 ```
 
 Switch to window by number:
 
-```
+```bash
 Ctrl-b 0
 Ctrl-b 1
 ```
@@ -116,25 +116,25 @@ Windows are best used to separate **tasks**, not layouts.
 
 Split horizontally:
 
-```
+```bash
 Ctrl-b "
 ```
 
 Split vertically:
 
-```
+```bash
 Ctrl-b %
 ```
 
 Move between panes:
 
-```
+```bash
 Ctrl-b ← ↑ → ↓
 ```
 
 Resize panes:
 
-```
+```bash
 Ctrl-b Ctrl-←
 Ctrl-b Ctrl-→
 Ctrl-b Ctrl-↑
@@ -143,7 +143,7 @@ Ctrl-b Ctrl-↓
 
 Close the current pane:
 
-```
+```bash
 Ctrl-b x
 ```
 
@@ -155,7 +155,7 @@ Panes are ideal for **contextual work**, not permanent separation.
 
 Enter copy mode:
 
-```
+```bash
 Ctrl-b [
 ```
 
@@ -167,19 +167,19 @@ Navigate using:
 
 Start selection:
 
-```
+```bash
 Space
 ```
 
 Copy selection:
 
-```
+```bash
 Enter
 ```
 
 Paste buffer:
 
-```
+```bash
 Ctrl-b ]
 ```
 
@@ -191,7 +191,7 @@ Copy mode is essential when reviewing logs or command output.
 
 Inside copy mode:
 
-```
+```bash
 /
 ```
 
@@ -199,7 +199,7 @@ Then type your search string and press Enter.
 
 Repeat search:
 
-```
+```bash
 n
 ```
 
@@ -211,20 +211,20 @@ Searching output beats rerunning commands—especially in production.
 
 Swap panes:
 
-```
+```bash
 Ctrl-b {
 Ctrl-b }
 ```
 
 Break pane into a new window:
 
-```
+```bash
 Ctrl-b !
 ```
 
 Kill the current window:
 
-```
+```bash
 Ctrl-b &
 ```
 
@@ -236,19 +236,19 @@ Reorganizing layouts quickly is one of tmux’s biggest strengths.
 
 Show time:
 
-```
+```bash
 Ctrl-b t
 ```
 
 Display pane numbers:
 
-```
+```bash
 Ctrl-b q
 ```
 
 Reload tmux config:
 
-```
+```bash
 Ctrl-b :source-file ~/.tmux.conf
 ```
 
