@@ -214,25 +214,34 @@ Once authentication is working, the next question is authorization.
 
 ### Basic check
 
-    kubectl auth can-i get pods
-
+```bash
+kubectl auth can-i get pods
+```
 This checks whether the **current context’s user** is allowed to list pods in the current namespace.
 
 ### Explicit namespace check
 
-    kubectl auth can-i create deployments -n example-namespace
+```bash
+kubectl auth can-i create deployments -n example-namespace
+```
 
 This avoids false assumptions caused by the active namespace.
 
 ### Cluster-scoped permissions
 
-    kubectl auth can-i list nodes
+```base
+kubectl auth can-i list nodes
+```
 
 This verifies permissions that are not namespace-bound.
 
 ## Why This Command Is So Valuable
 
-`kubectl auth can-i` is the fastest way to distinguish between:
+```bash
+kubectl auth can-i
+``` 
+
+Is the fastest way to distinguish between:
 
 - authentication problems (kubeconfig, credentials)
 - authorization problems (RBAC)
@@ -252,10 +261,11 @@ Before debugging:
 
 Run:
 
-    kubectl auth can-i <verb> <resource>
+```bash
+kubectl auth can-i <verb> <resource>
+```
 
 It turns RBAC from guesswork into something concrete.
-
 
 ---
 

@@ -37,7 +37,7 @@ My contribution here is:
 - adding context around *why* these aliases are useful
 - documenting how they fit into a day-to-day workflow
 
-Original source: https://gist.github.com/jgrodziski/9ed4a17709baad10dbcd4530b60dfcbb
+[Original source:](https://gist.github.com/jgrodziski/9ed4a17709baad10dbcd4530b60dfcbb)
 
 ---
 
