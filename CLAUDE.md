@@ -13,6 +13,7 @@ This is a Jekyll-based static site blog focused on SRE/DevOps topics. The site u
 ```bash
 bundle exec jekyll serve
 ```
+
 This starts a local development server with auto-regeneration on file changes. The server will be available at `http://localhost:4000`.
 
 ### Install Dependencies
@@ -20,6 +21,7 @@ This starts a local development server with auto-regeneration on file changes. T
 ```bash
 bundle install
 ```
+
 Run this after cloning or when Gemfile changes.
 
 ### Build Site
@@ -27,6 +29,7 @@ Run this after cloning or when Gemfile changes.
 ```bash
 bundle exec jekyll build
 ```
+
 Generates the static site in the `_site` directory.
 
 ## Content Structure
