@@ -9,18 +9,21 @@ This is a Jekyll-based static site blog focused on SRE/DevOps topics. The site u
 ## Development Commands
 
 ### Local Development
+
 ```bash
 bundle exec jekyll serve
 ```
 This starts a local development server with auto-regeneration on file changes. The server will be available at `http://localhost:4000`.
 
 ### Install Dependencies
+
 ```bash
 bundle install
 ```
 Run this after cloning or when Gemfile changes.
 
 ### Build Site
+
 ```bash
 bundle exec jekyll build
 ```
@@ -29,6 +32,7 @@ Generates the static site in the `_site` directory.
 ## Content Structure
 
 ### Blog Posts
+
 - All blog posts are located in `_posts/`
 - Posts must follow the naming convention: `YYYY-MM-DD-title.md`
 - Each post requires YAML front matter with at minimum:
@@ -38,11 +42,13 @@ Generates the static site in the `_site` directory.
   - `categories: category-name`
 
 ### Pages
+
 - Static pages (like `about.md`) live in the root directory
 - Pages use `layout: page` in front matter
 - The `permalink` front matter field controls the URL path
 
 ### Site Configuration
+
 - All site-wide settings are in `_config.yml`
 - Changes to `_config.yml` require restarting the Jekyll server
 - Key settings: `title`, `email`, `description`, `baseurl`, `url`

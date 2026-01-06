@@ -176,4 +176,3 @@ Toolchain drift is not a personal failure or a lack of skill. It is a reminder t
 Sometimes the correct move is not forward.
 
 It is back — briefly, intentionally, and with full awareness of why.
-
