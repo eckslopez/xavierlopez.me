@@ -1,7 +1,7 @@
 ---
 title: "Useful Linux Commands for Platform Engineers"
 date: 2023-12-05 10:50:00 +0000
-last_modified_at: 2025-04-03
+last_modified_at: "2025-04-03"
 categories:
   - linux
   - administration
@@ -71,6 +71,7 @@ grep -Ev '^($|#)' <path-to-file> | wc -l > <path-to-new-file>
 ```
 
 What this does:
+
 - `grep -Ev '^($|#)'` removes blank lines and comments
 - `wc -l` counts remaining lines
 - Output is redirected to a new file
@@ -91,6 +92,7 @@ This pattern shows up constantly in automation and compliance workflows.
 ### `getent`
 
 `getent` queries the Name Service Switch (NSS), which may pull data from:
+
 - local files
 - LDAP
 - SSSD
@@ -120,12 +122,15 @@ If identity or access looks wrong, `getent` is often the fastest truth source.
 ## In Practice: Platform Engineering Scenarios
 
 - **CI runner behaving oddly?**  
+
   Use `top` to check CPU saturation or memory pressure.
 
 - **Config drift suspected?**  
+
   Strip comments and compare active lines.
 
 - **Access control failing mysteriously?**  
+
   Use `getent` to verify NSS resolution.
 
 These commands help validate assumptions before deeper investigation.

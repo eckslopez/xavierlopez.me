@@ -2,7 +2,7 @@
 layout: single
 title: "Skip the Pipeline When Pushing to Git"
 date: 2022-02-07 08:00:00 +0000
-last_modified_at: 2025-01-02
+last_modified_at: "2025-01-02"
 categories:
   - git
   - ci-cd
@@ -31,6 +31,7 @@ This post explains how pipeline skipping works and when it should (and shouldnâ€
 ## When Skipping a Pipeline Makes Sense
 
 Reasonable cases include:
+
 - documentation-only changes
 - formatting or comment updates
 - experimental or temporary commits
@@ -47,19 +48,19 @@ GitLab supports pipeline skipping through commit message directives.
 
 Add one of the following to your commit message:
 
-```
+```git
 [skip ci]
 ```
 
 or
 
-```
+```git
 [ci skip]
 ```
 
 Example:
 
-```
+```bash
 git commit -m "Fix typo in README [skip ci]"
 ```
 
@@ -87,13 +88,14 @@ Always verify your repositoryâ€™s workflow logic before relying on this behavior
 
 GitLab also supports push options:
 
-```
+```bash
 git push -o ci.skip
 ```
 
 This skips pipeline creation for that push without modifying commit messages.
 
 This is especially useful when:
+
 - commits are already created
 - rewriting history is undesirable
 - automation is involved
@@ -103,11 +105,13 @@ This is especially useful when:
 ## Branch and Path-Based Skipping
 
 Some pipelines are configured to skip runs based on:
+
 - branch names
 - changed file paths
 - merge request context
 
 Examples:
+
 - only run pipelines on `main`
 - ignore changes under `/docs`
 - skip on tags
@@ -121,6 +125,7 @@ These approaches reduce the need for manual skipping.
 Skipping pipelines can be dangerous if misused.
 
 Common mistakes:
+
 - skipping pipelines for functional changes
 - bypassing required checks
 - masking failing tests
@@ -145,6 +150,7 @@ Good defaults reduce the need for manual intervention.
 ## CI Visibility and Auditing
 
 Even when skipped:
+
 - the commit is still recorded
 - the skip directive is visible
 - intent can be reviewed later

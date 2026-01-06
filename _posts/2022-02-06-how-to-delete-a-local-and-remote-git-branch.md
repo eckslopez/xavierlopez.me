@@ -2,7 +2,7 @@
 layout: single
 title: "How to Delete a Local and Remote Git Branch"
 date: 2022-02-06 08:00:00 +0000
-last_modified_at: 2025-01-01
+last_modified_at: "2025-01-01"
 categories:
   - git
   - cli
@@ -22,6 +22,7 @@ toc_sticky: true
 Branches are cheap—but abandoned branches add noise.
 
 Over time, repositories accumulate:
+
 - merged feature branches
 - stale experiment branches
 - branches tied to completed tickets
@@ -34,7 +35,7 @@ Cleaning them up improves clarity and reduces mistakes, especially in fast-movin
 
 To delete a local branch that has already been merged:
 
-```
+```bash
 git branch -d my-branch
 ```
 
@@ -46,7 +47,7 @@ The `-d` flag is **safe by default**. Git will refuse to delete the branch if it
 
 If Git refuses to delete the branch and you’re sure it’s no longer needed:
 
-```
+```bash
 git branch -D my-branch
 ```
 
@@ -60,7 +61,7 @@ Use this carefully—unmerged work will be lost.
 
 To delete a branch from the remote (commonly `origin`):
 
-```
+```sql
 git push origin --delete my-branch
 ```
 
@@ -74,7 +75,7 @@ After this, anyone still referencing the branch locally will see it as gone.
 
 You may also see:
 
-```
+```bash
 git push origin :my-branch
 ```
 
@@ -88,13 +89,13 @@ After deleting a remote branch, your local repo may still show it.
 
 Prune stale remote-tracking branches:
 
-```
+```bash
 git fetch --prune
 ```
 
 Or explicitly for a remote:
 
-```
+```bash
 git remote prune origin
 ```
 
@@ -106,19 +107,19 @@ This keeps your branch list accurate.
 
 List local branches:
 
-```
+```bash
 git branch
 ```
 
 List remote branches:
 
-```
+```bash
 git branch -r
 ```
 
 List both:
 
-```
+```bash
 git branch -a
 ```
 
@@ -130,7 +131,7 @@ Always confirm what you’re deleting.
 
 A typical cleanup sequence:
 
-```
+```sql
 git checkout main
 git pull
 git branch -d my-branch
@@ -139,6 +140,7 @@ git fetch --prune
 ```
 
 This ensures:
+
 - you’re not on the branch being deleted
 - local and remote state stay in sync
 

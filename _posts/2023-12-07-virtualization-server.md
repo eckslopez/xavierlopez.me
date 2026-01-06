@@ -1,7 +1,7 @@
 ---
 title: "Server Virtualization for Platform Engineers"
 date: 2023-12-07 11:01:00 +0000
-last_modified_at: 2025-08-14
+last_modified_at: "2025-08-14"
 categories: [virtualization, networking, platform]
 tags: [hypervisor, vm, kvm, esxi, capacity-planning, ha]
 excerpt: "A platform-engineer-focused overview of server virtualization, covering hypervisors, overcommitment, availability, and how these concepts still matter in a cloud-native world."
@@ -15,6 +15,7 @@ layout: single
 Even in a world dominated by containers and managed cloud services, **server virtualization is still foundational**.
 
 Whether you’re:
+
 - running Kubernetes on bare metal,
 - operating private cloud infrastructure,
 - debugging noisy-neighbor issues,
@@ -37,6 +38,7 @@ That single shift unlocks most of the benefits below.
 ### Efficiency
 
 Virtualization enables:
+
 - Rapid VM creation from templates
 - VM cloning for scale-out workloads
 - Dynamic resource allocation (CPU, memory)
@@ -76,11 +78,13 @@ For platform engineers, this is where **failure becomes routine instead of catas
 ### Time, Cost, and Organizational Impact
 
 Virtualization saves:
+
 - Time administering servers
 - Time replacing hardware
 - Time enabling HA and load balancing
 
 It also reduces:
+
 - Hardware footprint
 - Energy consumption
 - Labor spent on low-value tasks
@@ -109,6 +113,7 @@ Loaded directly onto hardware (no host OS):
   - KVM
 
 **Why platform engineers care:**
+
 - Better performance
 - Stronger isolation
 - Preferred for production infrastructure
@@ -142,6 +147,7 @@ From the VM’s perspective, it *is* a real machine — that illusion is the pow
 Virtual disks are just **files** representing entire hard drives.
 
 This enables:
+
 - Easy migration
 - Snapshotting
 - Replication
@@ -156,6 +162,7 @@ Which is why storage becomes software-defined long before most engineers realize
 ### What Overcommitment Means
 
 Overcommitment occurs when:
+
 - Allocated virtual resources exceed physical capacity
 
 This is intentional and common.
@@ -173,6 +180,7 @@ This is intentional and common.
 ### Memory Overcommitment
 
 Hypervisors use techniques like:
+
 - Memory sharing
 - Compression
 - Ballooning
