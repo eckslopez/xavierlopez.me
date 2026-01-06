@@ -36,7 +36,7 @@ If one tenant misbehaves, it can degrade the experience for all others—even wi
 
 This post explains the operational guardrails required to ensure **safe**, **predictable**, and **compliant** multi-tenant PostgreSQL deployments. All guardrails described here are fully implemented and verifiable in the accompanying project:
 
-**Project:** [Multi-Tenant PostgreSQL Security & Operational Isolation](https://github.com/YOUR_REPO/pg-multitenant-postgres)
+**Project:** [Multi-Tenant PostgreSQL Security & Operational Isolation](https://github.com/eckslopez/pg)
 
 ---
 
