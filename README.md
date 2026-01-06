@@ -13,23 +13,31 @@ The blog is intentionally written for platform engineers and adjacent roles (SRE
 ## Next Actions (Backlog)
 
 ### Phase 1 — Light curation (no new writing required)
+
 1. Create a **Start Here** page:
+
    - who this blog is for
    - how to use it
    - links to foundational posts
+   
 2. Add **light internal linking**:
+
    - connect obvious related posts (storage/auth/tooling/etc.)
    - avoid exhaustive linking; focus on the “reader path”
 3. Identify **fundamentals / pillars**:
+
    - small set of posts that serve as long-term anchors
    - future posts should link back to these where relevant
 
 ### Phase 2 — Resume-driven editorial roadmap
+
 The source for future posts will be my resume:
+
 - Every major skill and experience area in the resume becomes a candidate post.
 - The goal is not to rewrite the resume as prose, but to produce durable essays that demonstrate the underlying thinking.
 
 Guiding principles:
+
 - Use real experience as context, not as autobiography.
 - Prefer “why this matters” and “how to think about it” over step-by-step tutorials.
 - Write to be useful to peers, not to impress recruiters.
