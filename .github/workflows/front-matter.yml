@@ -3,25 +3,11 @@ name: Validate Front Matter
 on:
   pull_request:
   workflow_dispatch:
-    
+
 permissions:
   contents: read
 
 jobs:
-  validate-front-matter:
+  validate:
     name: Validate Front Matter
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install deps
-        run: pip install pyyaml python-dateutil
-
-      - name: Validate posts
-        run: python scripts/validate_front_matter.py
+    uses: eckslopez/platform-pipelines/.github/workflows/jekyll-validate-front-matter.yml@main

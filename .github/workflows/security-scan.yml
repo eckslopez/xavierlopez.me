@@ -11,17 +11,6 @@ permissions:
   pull-requests: read
 
 jobs:
-  gitleaks:
-    name: Secret Scan (Gitleaks)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  security:
+    name: Security Scan
+    uses: eckslopez/platform-pipelines/.github/workflows/security-scan.yml@main
