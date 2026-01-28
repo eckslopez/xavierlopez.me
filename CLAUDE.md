@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Jekyll-based static site blog focused on SRE/DevOps topics. The site uses the Minima theme and is hosted via GitHub Pages at `eckslopez/xavierlopez.me`.
+This is a Jekyll-based static site blog focused on SRE/DevOps topics. The site uses the Minimal Mistakes theme and is hosted via GitHub Pages at `eckslopez/xavierlopez.me`.
 
 ## Development Commands
 
@@ -58,8 +58,10 @@ Generates the static site in the `_site` directory.
 
 ## Architecture Notes
 
-- This is a standard Jekyll site using the Minima theme with minimal customization
-- The theme provides default layouts (`home`, `page`, `post`) without custom overrides
-- No custom `_layouts/`, `_includes/`, or `_sass/` directories exist - all styling comes from the Minima gem
-- Jekyll Feed plugin is enabled for RSS generation
+- This is a standard Jekyll site using the Minimal Mistakes theme (version 4.27.3) via remote_theme
+- The theme is configured with the "dark" skin variant
+- The theme provides layouts (`single`, `home`, `archive`, etc.) without custom overrides
+- No custom `_layouts/`, `_includes/`, or `_sass/` directories exist - all styling comes from the remote theme
+- Jekyll plugins enabled: Feed, Paginate, Sitemap, Gzip, Include Cache, Remote Theme
 - Posts are organized by date-prefixed filenames, with categories specified in front matter
+- Default layout for posts is `single` with author profile, read time, and related posts enabled
