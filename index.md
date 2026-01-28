@@ -18,7 +18,7 @@ intro:
 feature_row_k8s:
   - title: "Kubernetes Platform Automation"
     excerpt: "Production-grade Kubernetes cluster automation using Terraform and cloud-init. Automated provisioning with reproducible infrastructure deployment."
-    url: "https://github.com/eckslopez/k3s-infrastructure"
+    url: "https://github.com/eckslopez/kubernetes-platform-infrastructure"
     btn_label: "View on GitHub"
     btn_class: "btn--primary"
   - url: "/platform/engineering/building-production-grade-k3s-cluster-on-spare-capacity/"
