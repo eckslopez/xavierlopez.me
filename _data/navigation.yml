@@ -1,7 +1,7 @@
 main:
-  - title: "Resume"
-    url: /about/
-  - title: "Projects"
-    url: /projects/
   - title: "Blog"
     url: /posts/
+  - title: "Projects"
+    url: /projects/
+  - title: "Resume"
+    url: /about/
