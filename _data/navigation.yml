@@ -3,5 +3,7 @@ main:
     url: /posts/
   - title: "Projects"
     url: /projects/
+  - title: "Industry Notes"
+    url: /industry-notes/
   - title: "Resume"
     url: /about/
