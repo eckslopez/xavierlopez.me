@@ -23,12 +23,11 @@ REQUIRED_FIELDS = [
     "date",
     "last_modified_at",
     "categories",
-    "tags",
     "excerpt",
 ]
 
 # Minimal Mistakes expects categories/tags often as lists; we enforce that.
-LIST_FIELDS = ["categories", "tags"]
+LIST_FIELDS = ["categories"]
 
 ALLOWED_LAYOUTS = {"single", "home", "archive"}  # 'single' is typical for posts
 
