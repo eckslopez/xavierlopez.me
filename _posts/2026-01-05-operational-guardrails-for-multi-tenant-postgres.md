@@ -29,7 +29,7 @@ If one tenant misbehaves, it can degrade the experience for all others—even wi
 
 This post explains the operational guardrails required to ensure **safe**, **predictable**, and **compliant** multi-tenant PostgreSQL deployments. All guardrails described here are fully implemented and verifiable in the accompanying project:
 
-**Project:** [Multi-Tenant PostgreSQL Security & Operational Isolation](https://github.com/eckslopez/pg)
+**Project:** [Multi-Tenant PostgreSQL Security & Operational Isolation](https://github.com/zavestudios/pg)
 
 ---
 
@@ -222,6 +222,6 @@ Multi-tenant PostgreSQL can be secure, cost-effective, and IL4-aligned — but o
 - shared resource awareness (WAL, checkpoints, autovacuum)  
 - auditable configuration  
 
-The accompanying project provides a complete, [reproducible reference architecture](https://github.com/eckslopez/pg)
+The accompanying project provides a complete, [reproducible reference architecture](https://github.com/zavestudios/pg)
 
 Upcoming work: Terraform integration using the PostgreSQL provider, RDS automation, and CI/CD validation pipelines.

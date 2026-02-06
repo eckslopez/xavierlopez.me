@@ -7,7 +7,7 @@ name: ""
 description: "Senior Platform Engineer with a decade of experience in DevOps, site reliability engineering, cloud architecture and platform development. Sec+ and TS/SCI certified."
 url: "https://xavierlopez.me"
 baseurl: ""
-repository: "eckslopez/xavierlopez.me"
+repository: "zavestudios/xavierlopez.me"
 teaser: # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo: # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title: # overrides the website title displayed in the masthead, use " " for no title
@@ -31,7 +31,7 @@ author:
       url: "https://linkedin.com/in/zavelopez"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/eckslopez"
+    url: "https://github.com/zavestudios"
 
 # Site Footer
 footer:
@@ -41,7 +41,7 @@ footer:
       url: "https://linkedin.com/in/zavelopez"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/eckslopez"
+    url: "https://github.com/zavestudios"
 
 # Reading Files
 include:

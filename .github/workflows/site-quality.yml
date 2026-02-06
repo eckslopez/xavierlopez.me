@@ -10,6 +10,6 @@ permissions:
 jobs:
   quality:
     name: Site Quality
-    uses: eckslopez/platform-pipelines/.github/workflows/jekyll-quality.yml@main
+    uses: zavestudios/platform-pipelines/.github/workflows/jekyll-quality.yml@main
     with:
       lychee_config_path: .github/lychee.toml

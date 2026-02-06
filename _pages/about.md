@@ -99,4 +99,4 @@ California State University, San Bernardino, CA
 
 - Email: [xavier@xavierlopez.me](mailto:xavier@xavierlopez.me)
 - LinkedIn: [linkedin.com/in/zavelopez](https://linkedin.com/in/zavelopez)
-- GitHub: [github.com/eckslopez](https://github.com/eckslopez)
+- GitHub: [github.com/zavestudios](https://github.com/zavestudios)
